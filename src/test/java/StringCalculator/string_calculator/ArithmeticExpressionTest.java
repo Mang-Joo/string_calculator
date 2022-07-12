@@ -5,8 +5,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class ArithmeticExpressionTest {
 
@@ -46,5 +45,20 @@ class ArithmeticExpressionTest {
         assertThatThrownBy(() -> new ArithmeticExpression(expression))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("0으로 나눌 수 없습니다.");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "2 + 3 / 5",
+            "1 * 1",
+            "0 * 0",
+            "0 / 1",
+            "0 - 1",
+            "1",
+            "24 + 3"
+    })
+    void 정규식_테스트(String expression) {
+
+        assertThat(expression.matches("^?\\d+( ?[*\\-+/] ?\\d)*$")).isEqualTo(true);
     }
 }

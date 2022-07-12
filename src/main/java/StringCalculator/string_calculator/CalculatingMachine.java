@@ -1,8 +1,6 @@
 package StringCalculator.string_calculator;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class CalculatingMachine {
 
@@ -18,8 +16,8 @@ public class CalculatingMachine {
         Queue<String> numberQueue = new LinkedList<>();
 
         String[] number = arithmeticExpression.getExpression()
-                .replaceAll("\\D", "")
-                .split("");
+                .replaceAll("\\D", ",")
+                .split(",");
 
         String[] operator = arithmeticExpression.getExpression()
                 .replaceAll("\\d", "")
@@ -28,13 +26,11 @@ public class CalculatingMachine {
         Collections.addAll(stringQueue, operator);
         Collections.addAll(numberQueue, number);
 
-        int sum = Integer.parseInt(numberQueue.poll());
+        int sum = Integer.parseInt(Objects.requireNonNull(numberQueue.poll()));
 
-        while (!stringQueue.isEmpty()) {
+        while (!stringQueue.isEmpty() && !numberQueue.isEmpty()) {
             int num = Integer.parseInt(numberQueue.poll());
             String poll = stringQueue.poll();
-            System.out.println("num = " + num);
-            System.out.println("poll = " + poll);
 
             switch (poll) {
                 case "+" -> {
@@ -51,7 +47,6 @@ public class CalculatingMachine {
                 }
             }
         }
-//        Arrays.stream(expressions).
 
         return sum;
     }
